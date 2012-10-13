@@ -1,2 +1,4 @@
 
-module.exports = require('./lib/dirlyser');
+exports.dirlyser = require('./dirlyser');
+exports.direrator = require('./direrator');
+

@@ -1,7 +1,7 @@
 
 fs = require('fs')
-, dir = require('../')
-, direrator = require('../direrator') 
+, dirlyser = require('../').dirlyser
+, direrator = require('../').direrator
 , util = require('util')
 , csv = require('csv')
 , path = require('path')
@@ -25,12 +25,14 @@ var options = {
 	},{
 		filters: ['\.txt$']
 		, type: 'addTop'
-		, values: ['User: {{col1}}}', 'Num: {col2}}']
+		, values: ['User: {{col1}}}', 'Num: {{col2}}']
 	}]
 };
 
  direrator.create(options, function (err, data) {
-	editByCvs(options)
+	 direrator.edit(options.dest, options.edits, function (err, data) {
+		  console.log(err, data)
+		 });
   });
 
 // direrator.edit(options.dest, options.edits, function (err, data) {
@@ -70,12 +72,12 @@ var options = {
 	}
 	
 /*
-dir.readSize(options.dest, options, function(err, size) {
-	console.log(dir.to(size, options.unit), options.unit);
+dirlyser.readSize(options.dest, options, function(err, size) {
+	console.log(dirlyser.to(size, options.unit), options.unit);
 });
 */
 /* 
-dir.readDir(options.dest, options, function(err, dirs) {
+dirlyser.readDir(options.dest, options, function(err, dirs) {
 	console.log(err);
 	console.log(dirs);
 });
