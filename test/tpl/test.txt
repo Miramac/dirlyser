@@ -1,0 +1,12 @@
+1,2,132,F21 =     0x84,0,,0,,0,,False,{{col1}} -    Black,{{col1}}Black24.ico
+2,2,42,PRINT =   0x2A,0,,0,,0,,False,Snap-  shot,Snapshot24.ico
+3,2,129,F18 =     0x81,0,,0,,0,,False,White Screen,WhiteScreen24.ico
+4,2,135,F24 =     0x87,0,,0,,0,,False,Exit Annotation,Cancel2_24.ico
+5,1,r,,
+6,2,127,F16 =     0x7F,0,,0,,0,,False,Eraser,Eraser24.ico
+7,2,134,{{col2}} =     0x86,0,,0,,0,,False,Erase      All,EraseAll24.ico
+8,2,124,F13 =     0x7C,0,,0,,0,,False,Cursor,Cursor_24.ico
+9,2,125,F14 =     0x7D,0,,0,,0,,False,High- lighter,HighlighterYellow24.ico
+10,2,131,F20 =     0x83,0,,0,,0,,False,{{col1}} -    Blue,{{col1}}Blue24.ico
+11,2,130,F19 =     0x82,0,,0,,0,,False,{{col1}} -    Red,{{col1}}Red24.ico
+12,2,133,F22 =     0x85,0,,0,,0,,False,{{col1}} -    White,{{col1}}White24.ico
