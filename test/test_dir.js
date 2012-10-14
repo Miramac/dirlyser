@@ -11,10 +11,11 @@ fs = require('fs')
 var options = {
 	filters: ['\.ini$']
 	, unit: 'b' //for readSize()
-	, src: './tpl/'
-	, dest: './temp/'
-	, csv: './dir.csv'
-	, force: false
+	, src: './tpl/' //for create()
+	, dest: './temp/' //for create()
+	, csv: './dir.csv' //for create()
+	, index: 0  //for create()
+	, force: false //for create()
 	, edits: [{
 		filters: ['\.ini$']
 		, type: 'replace' //add, addTop
