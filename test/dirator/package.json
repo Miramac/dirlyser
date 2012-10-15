@@ -1,0 +1,14 @@
+{
+	"name": "dirator"
+	, "version": "0.0.1"
+	, "dependencies": { 
+		"commander": ">=1.0.x"
+		, "csv": ">=0.2.x"
+		, "underscore": ">=1.4.x"
+		, "wrench": ">3.9.x"
+		, "dirlyser": "http://www.jilili.de/npm/dirlyser-0.1.0.tgz"
+	}
+	, "engines": { 
+		"node": ">= 0.8.x" 
+	}
+}

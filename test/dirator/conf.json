@@ -1,0 +1,11 @@
+{
+	"project": "xy01"
+	, "src": "./template/web_download/"
+	, "dest": "./temp/"
+	, "csv": "./directories.csv"
+	, "index": 0
+	, "force": false
+	, "root": "/vol/www/download/htdocs/projects/"
+	, "title": "Download"
+	, "pwfile": "download.clients."
+}
