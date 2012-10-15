@@ -91,7 +91,7 @@ if (!options.csv) {
 			dest: path.join(options.dest,options.project, data[0])
 			, user: data[1]
 			, userDir: data[1]
-			, password: crypto.createHash('sha1').update(data[2]).digest('base64')
+			, password: data[2]
 			, pwfile: options.pwfile + data[1]
 		}
 		dirator(_.extend({},options, dirData), cd);
@@ -118,7 +118,7 @@ function dirator(options, cb) {
 	
 	options.force = (options.force) ? options.force : false;
 	options.preserve = (options.preserve) ? options.preserve : true;
-	
+	options.password = getPwHash(options.password);  
 	console.log('Gernerating directories with folling options:\n', options, '\n');
 	
 	//create directory
@@ -175,4 +175,9 @@ function replace(root, options, callback) {
 		});	
 		if(callback) callback(err, files);
 	});
+}
+
+//create an sha1 hash for auth basic 
+function getPwHash(pw) {
+	return '{SHA}' + crypto.createHash('sha1').update(pw).digest('base64')
 }
