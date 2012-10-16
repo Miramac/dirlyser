@@ -5,20 +5,26 @@ var fs = require('fs')
 , csv = require('csv')
 , wrench = require('wrench')
 , _ = require('underscore')
-, dirlyser = require('dirlyser').dirlyser
+, dirator = require('../lib/dirator')
+//, dirlyser = require('dirlyser').dirlyser
 ;
 
 var i //, exit = process.stdin.destroy()
 , options = { //can be ovrrided by --json
 	"project": "xy01"
-	, "src": __dirname+"/template/web_download/"
+	, "src": path.join(__dirname, "/../templates/web_download/")
 	, "dest": "./temp/"
 //	, "csv": "./directories.csv"
 	, "force": false
+	, "files": [{
+		"name": "#pwfile#"
+		, "data": "#user#:#password#"
+		}]
+	//replacements
 	, "root": "/vol/www/download/htdocs/projects/"
 	, "title": "Download"
-	, "pwfile": "download.clients."
-	, "userDir": "{{user}}"
+	, "pwfile": "download.clients_#userDir#"
+	, "userDir": "#user#"
 	, "preserve": true
 }
 
@@ -27,7 +33,7 @@ program
   .usage('[options] <Projct-Code> <user> <password>')
   .option('-f, --force', 'Force override')
   .option('-c, --csv [file]', 'Input cvs file')
-  .option('-j, --json [file]', 'Conf json file')
+  .option('-j, --json [file]', 'Config json file')
   .option('-u, --user [name]', 'User name')
   .option('-p, --password [pw]', 'User password')
   .option('-o, --override', 'Deleting all other files and folders')
@@ -42,6 +48,7 @@ if (typeof program.password === 'string') options.password = program.password;
 if (program.csv) options.csv = program.csv;
 if (program.override) options.preserve = false;
 if (program.test) options.test = true;
+
 
 // use args if csv file is missing
 if (!options.csv) {
@@ -64,7 +71,7 @@ if (!options.csv) {
 		
 		options.dest = path.join(options.dest,options.project, options.user)
 		options.userDir = options.user;
-		options.pwfile = options.pwfile + options.user;
+		options.pwfile = strReplace(options.pwfile, {"userDir":options.user});
 		
 	/* 
 		//if password is missing
@@ -94,7 +101,7 @@ if (!options.csv) {
 			, user: data[1]
 			, userDir: data[1]
 			, password: data[2]
-			, pwfile: options.pwfile + data[1]
+			, pwfile: strReplace(options.pwfile, {"userDir":data[1]})
 		}
 		dirator(_.extend({},options, dirData), cb);
 	})
@@ -112,75 +119,13 @@ function cb(err, data) {
 //	console.log(data);
 }
 
-/** Main:
- * Deep copy src to the dest 
- * Search and replace in dest
- * Create user htacces pwfile
- * **/
-function dirator(options, cb) {
-	
-	options.force = (options.force) ? options.force : false;
-	options.preserve = (options.preserve) ? options.preserve : true;
-	options.password = getPwHash(options.password);  
-	console.log('Gernerating directories with folling options:\n', options, '\n');
-	if(options.test) return;
-	//create directory
-	if(options.force || !fs.existsSync(options.dest)) {
-		wrench.mkdirSyncRecursive(options.dest);
-		wrench.copyDirSyncRecursive(options.src, options.dest, {preserve:options.preserve}); 
+function strReplace(str, obj, mark, options) {
+	mark = (mark) ? mark : '#';
+	options = (options) ? options : 'g';
+	for (var key in obj) {
+		if(obj.hasOwnProperty(key)) {
+			str = str.replace(new RegExp(mark+key+mark, options), obj[key]);
+		}
 	}
-	//add auth basic pw file
-	fs.exists(path.join(options.dest,options.pwfile), function(exists) {
-		fs.appendFile(path.join(options.dest,options.pwfile),  options.user + ':' + options.password);
-	});
-	
-	//Search and replace 
-	replace(options.dest , {
-		filters: ['index\.php$', '\.htaccess']
-		, type: 'replace' 
-		, values: [{
-			user: options.user
-			, root: options.root
-			, project: options.project
-			, title: options.title
-			, userDir: options.userDir
-			, pwfile: options.pwfile
-		}]
-	}, function (err, data) {
-		if(cb) cb(err, data);
-	});
-}
-
-/**
- * search and replace in files file
- * */
-function replace(root, options, callback) {
-	dirlyser.readDir(root, options, function(err, files) {
-		files = _.flatten(files);
-		//console.log(files);
-		_.each(files, function(file){ 
-			fs.readFile(file, 'UTF-8', function (err, data) {
-				if (err) throw err;
-				var i, value;
-				for(i=0; i<options.values.length; i++) {
-					value = options.values[i];
-					if(value === Object(value)) {
-						for (key in value) {
-							if(value.hasOwnProperty(key)) {
-								data = data.replace(new RegExp('{{'+key+'}}','g'), value[key]);
-							}
-						}
-					}
-					//console.log(file,data);
-					fs.writeFile(file, data);
-				}
-			});
-		});	
-		if(callback) callback(err, files);
-	});
-}
-
-//create an sha1 hash for auth basic 
-function getPwHash(pw) {
-	return '{SHA}' + crypto.createHash('sha1').update(pw).digest('base64')
+	return str;
 }

@@ -1,2 +1,2 @@
 @ECHO OFF
-node ./dirator.js  %*
+node %~dp0\.\dirator.js  %*
