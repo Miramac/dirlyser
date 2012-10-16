@@ -1,7 +1,7 @@
 directory-size-analyser
 =======================
 
-Node script to analyse directorys or create new directoies form a templates. 
+Node script to analyze directories or create new directories from templates. 
 
 ## Usage
 
