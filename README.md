@@ -14,5 +14,5 @@ Read directory size recursive:
     };
     
     dirlyser.readSize('../', options, function(err, size) {
-      console.log(dirlyser.to(size, options.unit), options.unit)
+      console.log(dirlyser.to(size, options.unit), options.unit);
     });
