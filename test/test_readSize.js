@@ -1,9 +1,25 @@
     var dirlyser = require('../')
+	, _ = require('underscore')
     , options = {
-      filters: ['\.js(on)*$'] //just count .js or .json files 
-      , unit: 'kb'
+      //filters: ['*'] //  just count .js or .json files: ['\.js(on)*$']
+       unit: 'gb'
     };
-    
-    dirlyser.readSize('../', options, function(err, size) {
-      console.log(dirlyser.to(size, options.unit), options.unit)
+	var dirlist = { 
+		dirs: []
+		, total:0
+		, groups: []
+	};
+	var file = 'c:/Users/Fabi/Documents/';
+    dirlyser.readSize(file, options, function(err, size) {
+      console.log(dirlyser.to(size, options.unit), options.unit);
+	  dirlist.dirs.push( { 
+		  name: file
+		  , size: dirlyser.to(size, options.unit)
+		  , group: file.split('/').slice(0,file.split('/').length -2).join('/')
+	  });
+	  dirlist.total += dirlyser.to(size, options.unit)
+	   console.log(dirlist);
     });
+	
+	
+	
