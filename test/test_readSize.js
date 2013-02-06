@@ -9,7 +9,7 @@
 		, total:0
 		, groups: []
 	};
-	var file = 'c:/Users/Fabi/Documents/';
+	var file = 'c:/"Program Files"/Vocatus/_DEV_Work';
     dirlyser.readSize(file, options, function(err, size) {
       console.log(dirlyser.to(size, options.unit), options.unit);
 	  dirlist.dirs.push( { 
