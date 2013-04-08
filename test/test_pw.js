@@ -2,7 +2,7 @@
 var crypto = require('crypto');
 
 var users = [
-	'user01:PWXY1234'
+	'vj06:JK43fZp8eQd'
 ];
 
 users.forEach(function(user) {

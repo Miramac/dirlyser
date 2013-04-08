@@ -22,4 +22,9 @@
     });
 	
 	
-	
+	dirlyser.readAll('../', {filters: [/alt$/i, /\.bak$/i]}, function(err, files) {
+	files = _.flatten(files);
+	if(	err) console.log('ERROR: '+ (err));
+		console.log((files));
+	console.log("done")	
+});

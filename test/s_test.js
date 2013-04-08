@@ -15,14 +15,14 @@ File-Filter: ['\.zip$'] 'alt\.[a-z,A-Z]+$'
 //Alle Alt Verzeichnisse (wie  [/\\\d\d_alt$/i] 
 */
 
-getDirs('p:/Daimler/', {filters: [/alt$/i, /\.bak$/i]}, function(err, files) {
+find('../', {filters: [/alt$/i, /\.bak$/i]}, function(err, files) {
 	files = _.flatten(files);
 	if(	err) console.log('ERROR: '+ (err));
-	//	console.log((files));
+		console.log((files));
 	console.log("done")	
 });
 
-function getDirs( item, options, cb ) {
+function find( item, options, cb ) {
 	var results = [];
 	if(typeof options === 'function') {
 		cb = options;
@@ -37,20 +37,18 @@ function getDirs( item, options, cb ) {
 
 			if(testFilter( item.toString(), options.filters ) ) {
 				results.push( item );
-				//console.log(item);
-				cb( err, item );
-				
+		//		console.log('DIR: '+item);
+				cb( err, results );
 			}else {
 				fs.readdir(item, function(err, items) {
 					async.forEach(
 					items
 					, function( dirItem, callback ) {
-						getDirs( path.join( item, dirItem ), options, function( err, file ) {
+						find( path.join( item, dirItem ), options, function( err, file ) {
 							//Test filter
 							if(testFilter( file.toString(), options.filters ) ) {
 								results.push( file );
-								console.log('file: ' +file);
-							//console.log(file);
+								//console.log(' FILE: '+file );
 							}
 							callback(err);
 						});
